@@ -72,8 +72,8 @@ def update_sales_worksheet(data):
     """
     print("Updating sales worksheet...\n")
 
-    sales_worksheet = SHEET.worksheet("sales") # sales sheet in goggle worksheets
-    sales_worksheet.append_row(data) # appends row to sales sheet in google worksheets eg. row 9
+    sales_worksheet = SHEET.worksheet("sales")  # sales sheet in goggle spreadsheets
+    sales_worksheet.append_row(data)  # appends row to sales sheet in google spreadsheets eg. row 9
     print("Sales worksheet updated successfully.\n")
 
 
@@ -88,8 +88,16 @@ def calculate_surplus_data(sales_row):
     print("Calculating surplus data...\n")
     stock = SHEET.worksheet("stock").get_all_values()
     # pprint(stock)
-    stock_row = stock[-1] # slice final item from the list
-    print(stock_row)
+    stock_row = stock[-1]  # slice final item from the list
+    # print(f"stock row: {stock_row}")
+    # print(f"sales row: {sales_row}")
+
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+    # print(surplus_data)
+    return surplus_data
 
 
 def main():
@@ -100,7 +108,8 @@ def main():
     # print(data)
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    new_surplus_data = calculate_surplus_data(sales_data)
+    print(new_surplus_data)
 
 print("Welcome to Love Sandwiches Data Automtion")
 main()
